@@ -31,12 +31,12 @@ class ApiFactory {
      * - 3、 方法是否可调用
      * - 4、 控制器是否初始化成功
      *
-     * @param boolen $isInitialize 是否在创建后进行初始化
-     * @param string $_REQUEST['service'] 接口服务名称，格式：XXX.XXX
+     * @param boolean $isInitialize 是否在创建后进行初始化
      * @return \PhalApi\Api 自定义的控制器
      *
      * @uses \PhalApi\Api::init()
      * @throws BadRequestException 非法请求下返回400
+     * @throws InternalServerErrorException
      */
     static function generateService($isInitialize = TRUE) {
         $di         = DI();
@@ -51,8 +51,8 @@ class ApiFactory {
             );
         }
 
-        $apiClass = '\\' . str_replace('_', '\\', $namespace) 
-            . '\\Api\\' . str_replace('_', '\\', ucfirst($api));
+        $apiClass = '\\' . str_replace('_', '\\', $namespace)
+            . '\\Api\\' . str_replace('_', '\\', $api);
 
         if (!class_exists($apiClass)) {
             throw new BadRequestException(
@@ -80,5 +80,4 @@ class ApiFactory {
 
         return $api;
     }
-	
 }
